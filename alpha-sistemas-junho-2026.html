@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="theme-color" content="#0a0a0a">
+<title>Alpha Sistemas · Meta Ads · Junho 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0a0a0a;
+    --surface: #111111;
+    --surface2: #161616;
+    --border: #1e1e1e;
+    --border-bright: #2a2a2a;
+    --yellow: #F5C800;
+    --yellow-dim: rgba(245,200,0,0.12);
+    --yellow-glow: rgba(245,200,0,0.06);
+    --text: #ffffff;
+    --text-muted: #666666;
+    --text-dim: #444444;
+    --font-display: 'Barlow Condensed', sans-serif;
+    --font-body: 'Barlow', sans-serif;
+    --radius: 10px;
+    --radius-sm: 6px;
+  }
+
+  html { background: var(--bg); }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* Circuit background */
+  .circuit-layer {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.04;
+    background-image:
+      linear-gradient(var(--yellow) 1px, transparent 1px),
+      linear-gradient(90deg, var(--yellow) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+  .circuit-layer::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, var(--yellow) 1.5px, transparent 1.5px);
+    background-size: 60px 60px;
+    opacity: 0.6;
+  }
+
+  /* Glow top */
+  .glow-top {
+    position: fixed;
+    top: -120px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 340px;
+    height: 340px;
+    background: radial-gradient(circle, rgba(245,200,0,0.12) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .page {
+    position: relative;
+    z-index: 1;
+    max-width: 520px;
+    margin: 0 auto;
+    padding: 0 0 48px;
+  }
+
+  /* ─── HEADER ─── */
+  .header {
+    padding: 36px 20px 24px;
+    position: relative;
+  }
+  .header-agency {
+    font-family: var(--font-display);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    color: var(--yellow);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .header-agency::before {
+    content: '';
+    display: inline-block;
+    width: 18px;
+    height: 2px;
+    background: var(--yellow);
+  }
+  .header-client {
+    font-family: var(--font-display);
+    font-size: clamp(42px, 12vw, 64px);
+    font-weight: 900;
+    color: var(--text);
+    text-transform: uppercase;
+    line-height: 0.9;
+    letter-spacing: -1px;
+  }
+  .header-client span {
+    color: var(--yellow);
+  }
+  .header-handle {
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-top: 8px;
+  }
+  .header-period {
+    margin-top: 16px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--yellow-dim);
+    border: 1px solid rgba(245,200,0,0.25);
+    border-radius: 4px;
+    padding: 6px 14px;
+  }
+  .header-period-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--yellow);
+    animation: pulse-dot 2s ease-in-out infinite;
+  }
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.7); }
+  }
+  .header-period-text {
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--yellow);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+
+  /* ─── DIVIDER ─── */
+  .divider {
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--border-bright), transparent);
+    margin: 0 20px;
+  }
+
+  /* ─── SECTION LABEL ─── */
+  .section-label {
+    font-family: var(--font-display);
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    padding: 20px 20px 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+  .section-label .dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--yellow);
+    flex-shrink: 0;
+  }
+
+  /* ─── INVEST HERO ─── */
+  .invest-hero {
+    margin: 4px 20px 0;
+    background: var(--surface);
+    border: 1px solid var(--border-bright);
+    border-radius: var(--radius);
+    padding: 22px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    position: relative;
+    overflow: hidden;
+  }
+  .invest-hero::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--yellow);
+  }
+  .invest-hero::after {
+    content: '';
+    position: absolute;
+    right: -30px;
+    top: -30px;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: var(--yellow-glow);
+  }
+  .invest-main {}
+  .invest-lbl {
+    font-family: var(--font-display);
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 4px;
+  }
+  .invest-val {
+    font-family: var(--font-display);
+    font-size: clamp(36px, 10vw, 48px);
+    font-weight: 900;
+    color: var(--yellow);
+    line-height: 1;
+    letter-spacing: -1px;
+  }
+  .invest-period {
+    font-family: var(--font-body);
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 4px;
+  }
+  .invest-badge {
+    text-align: right;
+    flex-shrink: 0;
+  }
+  .invest-badge-num {
+    font-family: var(--font-display);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  /* ─── KPI GRID ─── */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding: 0 20px;
+  }
+  .kpi-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 14px 14px 12px;
+    position: relative;
+    overflow: hidden;
+    animation: fadeUp 0.5s ease both;
+  }
+  .kpi-card:nth-child(1) { animation-delay: 0.05s; }
+  .kpi-card:nth-child(2) { animation-delay: 0.10s; }
+  .kpi-card:nth-child(3) { animation-delay: 0.15s; }
+  .kpi-card:nth-child(4) { animation-delay: 0.20s; }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .kpi-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(to right, var(--yellow), transparent);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .kpi-card:active::after { opacity: 1; }
+  .kpi-lbl {
+    font-family: var(--font-display);
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+  }
+  .kpi-val {
+    font-family: var(--font-display);
+    font-size: clamp(26px, 7vw, 32px);
+    font-weight: 900;
+    color: var(--text);
+    line-height: 1;
+  }
+  .kpi-val.accent { color: var(--yellow); }
+  .kpi-sub {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 3px;
+    font-weight: 400;
+  }
+
+  /* ─── CAMPAIGN CARDS ─── */
+  .camp-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 0 20px;
+  }
+  .camp-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    animation: fadeUp 0.5s ease both;
+  }
+  .camp-card.primary {
+    border-color: rgba(245,200,0,0.3);
+  }
+  .camp-card:nth-child(1) { animation-delay: 0.1s; }
+  .camp-card:nth-child(2) { animation-delay: 0.2s; }
+
+  .camp-header {
+    padding: 16px 18px 12px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .camp-tag {
+    font-family: var(--font-display);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 3px;
+    margin-bottom: 6px;
+    display: inline-block;
+  }
+  .camp-tag.conv { background: var(--yellow-dim); color: var(--yellow); }
+  .camp-tag.reach { background: rgba(255,255,255,0.06); color: #888; }
+
+  .camp-title {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 900;
+    color: var(--text);
+    text-transform: uppercase;
+    line-height: 1.15;
+  }
+
+  .camp-invest-badge {
+    text-align: right;
+    flex-shrink: 0;
+  }
+  .cib-lbl {
+    font-family: var(--font-display);
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 2px;
+  }
+  .cib-val {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--yellow);
+    line-height: 1;
+  }
+  .cib-daily {
+    font-family: var(--font-display);
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text-dim);
+    margin-top: 2px;
+  }
+
+  .camp-body {
+    padding: 14px 18px 16px;
+  }
+  .camp-metrics {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .cm {
+    background: var(--surface2);
+    border-radius: var(--radius-sm);
+    padding: 10px 12px;
+  }
+  .cm-lbl {
+    font-family: var(--font-display);
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 4px;
+  }
+  .cm-val {
+    font-family: var(--font-display);
+    font-size: clamp(20px, 5.5vw, 26px);
+    font-weight: 900;
+    color: var(--text);
+    line-height: 1;
+  }
+  .cm-val.y { color: var(--yellow); }
+
+  .camp-progress {
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+  }
+  .cp-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 6px;
+  }
+  .cp-lbl {
+    font-family: var(--font-display);
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+  }
+  .cp-pct {
+    font-family: var(--font-display);
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--yellow);
+    letter-spacing: 1px;
+  }
+  .cp-bar {
+    height: 3px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .cp-fill {
+    height: 100%;
+    border-radius: 2px;
+    background: var(--yellow);
+    transition: width 1s ease;
+  }
+  .cp-fill.secondary { background: #444; }
+
+  /* ─── TOTALS ─── */
+  .totals-block {
+    margin: 0 20px;
+    background: var(--surface);
+    border: 1px solid rgba(245,200,0,0.25);
+    border-radius: var(--radius);
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  .totals-block::before {
+    content: 'TOTAIS';
+    position: absolute;
+    right: 16px;
+    top: 14px;
+    font-family: var(--font-display);
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--text-dim);
+    letter-spacing: 3px;
+  }
+  .totals-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .tot-item {}
+  .tot-lbl {
+    font-family: var(--font-display);
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 4px;
+  }
+  .tot-val {
+    font-family: var(--font-display);
+    font-size: clamp(24px, 6vw, 30px);
+    font-weight: 900;
+    color: var(--text);
+    line-height: 1;
+  }
+  .tot-val.big { color: var(--yellow); }
+
+  /* ─── FOOTER ─── */
+  .footer {
+    margin: 24px 20px 0;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .footer-brand {
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--yellow);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+  .footer-info {
+    font-family: var(--font-display);
+    font-size: 10px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-align: right;
+  }
+</style>
+</head>
+<body>
+
+<div class="circuit-layer"></div>
+<div class="glow-top"></div>
+
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-agency">Morada Digital · Performance</div>
+    <div class="header-client">Alpha<br><span>Sistemas</span></div>
+    <div class="header-handle">@alphasistemas · Fortaleza, CE</div>
+    <div class="header-period">
+      <div class="header-period-dot"></div>
+      <div class="header-period-text">Meta Ads · Junho 2026</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- INVESTIMENTO HERO -->
+  <div class="section-label"><span class="dot"></span>Investimento</div>
+  <div class="invest-hero">
+    <div class="invest-main">
+      <div class="invest-lbl">Total Investido</div>
+      <div class="invest-val">R$ 380,70</div>
+      <div class="invest-period">1 mai – 1 jun 2026</div>
+    </div>
+    <div class="invest-badge">
+      <div class="invest-badge-num">2 campanhas<br>ativas</div>
+    </div>
+  </div>
+
+  <!-- KPIs -->
+  <div class="section-label" style="margin-top:20px"><span class="dot"></span>Visão Geral</div>
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-lbl">Alcance Total</div>
+      <div class="kpi-val">78.188</div>
+      <div class="kpi-sub">Contas atingidas</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-lbl">Resultados</div>
+      <div class="kpi-val accent">1.362</div>
+      <div class="kpi-sub">Cliques + visitas</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-lbl">Custo Médio</div>
+      <div class="kpi-val">R$ 0,28</div>
+      <div class="kpi-sub">Por resultado</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-lbl">Frequência</div>
+      <div class="kpi-val">1,76</div>
+      <div class="kpi-sub">Média geral</div>
+    </div>
+  </div>
+
+  <!-- CAMPANHAS -->
+  <div class="section-label" style="margin-top:20px"><span class="dot"></span>Campanhas</div>
+  <div class="camp-stack">
+
+    <!-- Conversão -->
+    <div class="camp-card primary">
+      <div class="camp-header">
+        <div>
+          <span class="camp-tag conv">Conversão</span>
+          <div class="camp-title">[CP] ADS<br>Conversão · Maio</div>
+        </div>
+        <div class="camp-invest-badge">
+          <div class="cib-lbl">Investimento</div>
+          <div class="cib-val">R$ 255,91</div>
+          <div class="cib-daily">R$ 19,83 / dia</div>
+        </div>
+      </div>
+      <div class="camp-body">
+        <div class="camp-metrics">
+          <div class="cm">
+            <div class="cm-lbl">Cliques no Link</div>
+            <div class="cm-val y">915</div>
+          </div>
+          <div class="cm">
+            <div class="cm-lbl">Alcance</div>
+            <div class="cm-val">44.857</div>
+          </div>
+          <div class="cm">
+            <div class="cm-lbl">Frequência</div>
+            <div class="cm-val">1,83</div>
+          </div>
+          <div class="cm">
+            <div class="cm-lbl">Custo / Clique</div>
+            <div class="cm-val y">R$ 0,28</div>
+          </div>
+        </div>
+        <div class="camp-progress">
+          <div class="cp-row">
+            <span class="cp-lbl">Participação no investimento</span>
+            <span class="cp-pct">67%</span>
+          </div>
+          <div class="cp-bar"><div class="cp-fill" style="width:67%"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Alcance -->
+    <div class="camp-card">
+      <div class="camp-header">
+        <div>
+          <span class="camp-tag reach">Alcance</span>
+          <div class="camp-title">[CP] Alcance<br>Perfil IG · Maio</div>
+        </div>
+        <div class="camp-invest-badge">
+          <div class="cib-lbl">Investimento</div>
+          <div class="cib-val" style="color:#aaa">R$ 124,79</div>
+          <div class="cib-daily">R$ 9,84 / dia</div>
+        </div>
+      </div>
+      <div class="camp-body">
+        <div class="camp-metrics">
+          <div class="cm">
+            <div class="cm-lbl">Visitas Perfil</div>
+            <div class="cm-val y">447</div>
+          </div>
+          <div class="cm">
+            <div class="cm-lbl">Alcance</div>
+            <div class="cm-val">33.331</div>
+          </div>
+          <div class="cm">
+            <div class="cm-lbl">Frequência</div>
+            <div class="cm-val">1,69</div>
+          </div>
+          <div class="cm">
+            <div class="cm-lbl">Custo / Visita</div>
+            <div class="cm-val y">R$ 0,28</div>
+          </div>
+        </div>
+        <div class="camp-progress">
+          <div class="cp-row">
+            <span class="cp-lbl">Participação no investimento</span>
+            <span class="cp-pct" style="color:#666">33%</span>
+          </div>
+          <div class="cp-bar"><div class="cp-fill secondary" style="width:33%"></div></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- TOTAIS -->
+  <div class="section-label" style="margin-top:20px"><span class="dot"></span>Resultados Totais</div>
+  <div class="totals-block">
+    <div class="totals-grid">
+      <div class="tot-item">
+        <div class="tot-lbl">Alcance</div>
+        <div class="tot-val">78.188</div>
+      </div>
+      <div class="tot-item">
+        <div class="tot-lbl">Resultados</div>
+        <div class="tot-val">1.362</div>
+      </div>
+      <div class="tot-item">
+        <div class="tot-lbl">Investimento</div>
+        <div class="tot-val big">R$ 380,70</div>
+      </div>
+      <div class="tot-item">
+        <div class="tot-lbl">Custo Médio</div>
+        <div class="tot-val">R$ 0,28</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-brand">Morada Digital</div>
+    <div class="footer-info">Meta Ads · @alphasistemas<br>Junho 2026</div>
+  </div>
+
+</div>
+
+</body>
+</html>
